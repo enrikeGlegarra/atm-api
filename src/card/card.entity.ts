@@ -18,7 +18,7 @@ export class Card {
   type: CardType;
 
   @Column()
-  pin: string; // Asegúrate de encriptarlo antes de guardarlo
+  pin: string;
 
   @Column({ default: false })
   isActive: boolean;

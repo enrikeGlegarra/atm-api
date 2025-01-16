@@ -7,7 +7,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { User } from './user/entities/user.entity';
 import { Account } from './account/entities/account.entity';
 import { Card } from './card/card.entity';
-import { Transaction } from './transaction/transaction.entity';
+import { Transaction } from './transaction/entities/transaction.entity';
 
 @Module({
   imports: [
