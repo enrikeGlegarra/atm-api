@@ -20,6 +20,9 @@ export class Account {
   @Column({ type: 'decimal', precision: 15, scale: 2, default: 0 })
   balance: number;
 
+  @Column()
+  bankId: string;
+
   @ManyToOne(() => User, (user) => user.accounts)
   user: User;
 

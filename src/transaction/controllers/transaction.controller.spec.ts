@@ -4,6 +4,7 @@ import { TransactionService } from '../services/transaction.service';
 import { CardActivationGuard } from '../../card/guard/card-activation.guard';
 import { ExecutionContext } from '@nestjs/common';
 import { TransactionType } from '../entities/transaction.entity';
+import { WithdrawDto } from '../dtos/withdraw.dto';
 
 describe('TransactionController', () => {
   let transactionController: TransactionController;
@@ -12,6 +13,7 @@ describe('TransactionController', () => {
 
   const mockTransactionService = {
     getTransactionsByAccount: jest.fn(),
+    withdraw: jest.fn(),
   };
 
   const mockCardActivationGuard: CardActivationGuard = {
@@ -84,5 +86,38 @@ describe('TransactionController', () => {
 
     expect(canActivateSpy).toHaveBeenCalled();
     expect(isAllowed).toBe(true);
+  });
+  it('should call TransactionService.withdraw with the correct parameters', async () => {
+    const mockWithdrawDto: WithdrawDto = {
+      cardId: '12345',
+      amount: 100,
+      atmBankId: '67890',
+    };
+    const successMessage = 'Withdrawal of 100 successful. Commission: 0';
+    mockTransactionService.withdraw.mockResolvedValue(successMessage);
+
+    const result = await transactionController.withdraw(mockWithdrawDto);
+
+    expect(mockTransactionService.withdraw).toHaveBeenCalledWith(
+      mockWithdrawDto,
+    );
+    expect(result).toBe(successMessage);
+  });
+
+  it('should throw an error if TransactionService.withdraw fails', async () => {
+    const mockWithdrawDto: WithdrawDto = {
+      cardId: '12345',
+      amount: 100,
+      atmBankId: '67890',
+    };
+    const errorMessage = 'Withdrawal failed';
+    mockTransactionService.withdraw.mockRejectedValue(new Error(errorMessage));
+
+    await expect(
+      transactionController.withdraw(mockWithdrawDto),
+    ).rejects.toThrowError(errorMessage);
+    expect(mockTransactionService.withdraw).toHaveBeenCalledWith(
+      mockWithdrawDto,
+    );
   });
 });
