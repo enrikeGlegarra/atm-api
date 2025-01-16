@@ -32,26 +32,21 @@ describe('CardController', () => {
   });
 
   it('should activate a card and return a success message', async () => {
-    // Arrange
     const mockDto: ActiveCardDto = { cardId: '12345' };
     const successMessage = 'Card activated successfully';
     mockCardService.activeCard.mockResolvedValue(successMessage);
 
-    // Act
     const result = await cardController.activateCard(mockDto);
 
-    // Assert
     expect(cardService.activeCard).toHaveBeenCalledWith(mockDto.cardId);
     expect(result).toBe(successMessage);
   });
 
   it('should throw an error if activation fails', async () => {
-    // Arrange
     const mockDto: ActiveCardDto = { cardId: '12345' };
     const errorMessage = 'Card activation failed';
     mockCardService.activeCard.mockRejectedValue(new Error(errorMessage));
 
-    // Act & Assert
     await expect(cardController.activateCard(mockDto)).rejects.toThrowError(
       errorMessage,
     );
