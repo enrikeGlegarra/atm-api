@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Account } from '../account/entities/account.entity';
+import { Account } from '../../account/entities/account.entity';
 
 export enum CardType {
   DEBIT = 'DEBIT',
